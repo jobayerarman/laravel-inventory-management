@@ -2,8 +2,10 @@
 
 namespace InventSys\Http\Controllers\Admin;
 
+use InventSys\Models\Customer;
 use Illuminate\Http\Request;
 use InventSys\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CustomersController extends Controller
 {
@@ -14,7 +16,13 @@ class CustomersController extends Controller
      */
     public function index()
     {
-        //
+        $customers = Customer::all();
+        $params = [
+            'title' => 'Customers Listing',
+            'customers' => $customers,
+        ];
+
+        return view('admin.customers.customers_list')->with($params);
     }
 
     /**
@@ -24,7 +32,7 @@ class CustomersController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.customers.customers_create');
     }
 
     /**
@@ -35,7 +43,7 @@ class CustomersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return redirect()->route('customers.index')->with('success', "The customer <strong>$customer->first_name</strong> has successfully been created.");
     }
 
     /**
@@ -46,7 +54,7 @@ class CustomersController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('admin.customers.customers_delete');
     }
 
     /**
@@ -57,7 +65,7 @@ class CustomersController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('admin.customers.customers_edit');
     }
 
     /**
@@ -69,7 +77,7 @@ class CustomersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return redirect()->route('customers.index')->with('success', "The customer <strong>$customer->first_name</strong> has successfully been updated.");
     }
 
     /**
@@ -80,6 +88,6 @@ class CustomersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return redirect()->route('customers.index')->with('success', "The customer <strong>$customer->first_name</strong> has successfully been archived.");
     }
 }

@@ -1,13 +1,20 @@
 <?php
 
-namespace InventSys;
+namespace InventSys\Models;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Notifications\Notifiable;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use SoftDeletes, EntrustUserTrait {
+        SoftDeletes::restore insteadof EntrustUserTrait;
+        EntrustUserTrait::restore insteadof SoftDeletes;
+    }
 
     /**
      * The attributes that are mass assignable.

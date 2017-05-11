@@ -2,8 +2,10 @@
 
 namespace InventSys\Http\Controllers\Admin;
 
+use InventSys\Models\Order;
 use Illuminate\Http\Request;
 use InventSys\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OrdersController extends Controller
 {

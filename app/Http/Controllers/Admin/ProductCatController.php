@@ -3,7 +3,9 @@
 namespace InventSys\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use InventSys\Models\Category;
 use InventSys\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductCatController extends Controller
 {

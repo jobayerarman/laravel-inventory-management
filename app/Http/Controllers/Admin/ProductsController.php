@@ -2,8 +2,12 @@
 
 namespace InventSys\Http\Controllers\Admin;
 
+use InventSys\Models\Brand;
 use Illuminate\Http\Request;
+use InventSys\Models\Product;
+use InventSys\Models\Category;
 use InventSys\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductsController extends Controller
 {

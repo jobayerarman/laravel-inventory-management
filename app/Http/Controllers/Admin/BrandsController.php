@@ -2,8 +2,10 @@
 
 namespace InventSys\Http\Controllers\Admin;
 
+use InventSys\Models\Brand;
 use Illuminate\Http\Request;
 use InventSys\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class BrandsController extends Controller
 {
@@ -14,7 +16,7 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.brands.brands_list');
     }
 
     /**
@@ -24,7 +26,7 @@ class BrandsController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.brands.brands_create');
     }
 
     /**
@@ -35,7 +37,7 @@ class BrandsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return redirect()->route('brands.index')->with('success', "The brand <strong>Brand</strong> has successfully been created.");
     }
 
     /**
@@ -46,7 +48,7 @@ class BrandsController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('admin.brands.brands_delete');
     }
 
     /**
@@ -57,7 +59,7 @@ class BrandsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('admin.brands.brands_edit');
     }
 
     /**
@@ -69,7 +71,7 @@ class BrandsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return redirect()->route('brands.index')->with('success', "The brand <strong>Brand</strong> has successfully been updated.");
     }
 
     /**
@@ -80,6 +82,6 @@ class BrandsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return redirect()->route('brands.index')->with('success', "The brand <strong>Brand</strong> has successfully been archived.");
     }
 }

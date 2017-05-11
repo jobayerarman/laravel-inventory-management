@@ -2,8 +2,10 @@
 
 namespace InventSys\Http\Controllers\Admin;
 
+use InventSys\Models\User;
 use Illuminate\Http\Request;
 use InventSys\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UsersController extends Controller
 {
@@ -14,7 +16,12 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        $params = [
+            'title' => 'Users Listing',
+            'users' => $users,
+        ];
+        return view('admin.users.users_list')->with($params);
     }
 
     /**
@@ -24,7 +31,10 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        $params = [
+            'title' => 'Create User',
+        ];
+        return view('admin.users.users_create')->with($params);
     }
 
     /**
@@ -35,7 +45,17 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'password' => 'required',
+        ]);
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+        ]);
+        return redirect()->route('users.index')->with('success', "The user <strong>$user->name</strong> has successfully been created.");
     }
 
     /**
@@ -46,7 +66,22 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        try
+        {
+            $user = User::findOrFail($id);
+            $params = [
+                'title' => 'Delete User',
+                'user' => $user,
+            ];
+            return view('admin.users.users_delete')->with($params);
+        }
+        catch (ModelNotFoundException $ex)
+        {
+            if ($ex instanceof ModelNotFoundException)
+            {
+                return response()->view('errors.'.'404');
+            }
+        }
     }
 
     /**
@@ -57,7 +92,22 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        try
+        {
+            $user = User::findOrFail($id);
+            $params = [
+                'title' => 'Edit User',
+                'user' => $user,
+            ];
+            return view('admin.users.users_edit')->with($params);
+        }
+        catch (ModelNotFoundException $ex)
+        {
+            if ($ex instanceof ModelNotFoundException)
+            {
+                return response()->view('errors.'.'404');
+            }
+        }
     }
 
     /**
@@ -69,7 +119,24 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try
+        {
+            $user = User::findOrFail($id);
+            $this->validate($request, [
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email,'.$id,
+            ]);
+            $user->email = $request->input('email');
+            $user->save();
+            return redirect()->route('users.index')->with('success', "The user <strong>$user->name</strong> has successfully been updated.");
+        }
+        catch (ModelNotFoundException $ex)
+        {
+            if ($ex instanceof ModelNotFoundException)
+            {
+                return response()->view('errors.'.'404');
+            }
+        }
     }
 
     /**
@@ -80,6 +147,18 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try
+        {
+            $user = User::findOrFail($id);
+            $user->delete();
+            return redirect()->route('users.index')->with('success', "The user <strong>$user->name</strong> has successfully been archived.");
+        }
+        catch (ModelNotFoundException $ex)
+        {
+            if ($ex instanceof ModelNotFoundException)
+            {
+                return response()->view('errors.'.'404');
+            }
+        }
     }
 }
